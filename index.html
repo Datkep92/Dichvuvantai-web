@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Sổ doanh thu hộ kinh doanh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sổ doanh thu">
+<meta name="theme-color" content="#f2f3f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1116" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="khung">
+
+  <header>
+    <div class="tieu-de">
+      <h1 id="ten-ung-dung">Sổ doanh thu</h1>
+      <div class="phu" id="phu-header">Hôm nay: —</div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== 1. GHI THU ===================== -->
+    <section id="man-ghi" class="man dang-mo">
+      <div class="the" id="tom-tat-hom-nay">
+        <h2>Hôm nay</h2>
+        <div class="hang">
+          <div>
+            <div class="so-lon" id="hn-tong">0 đ</div>
+            <div class="nho"><span id="hn-cuoc">0 cuốc</span></div>
+          </div>
+          <div class="phai">
+            <div class="nho"><span class="cham" style="display:inline-block;background:var(--luc)"></span> Tiền mặt <b id="hn-cash">0 đ</b></div>
+            <div class="nho"><span class="cham" style="display:inline-block;background:var(--xanh)"></span> Chuyển khoản <b id="hn-transfer">0 đ</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="the">
+        <h2>Ghi tiền nhận được</h2>
+
+        <div class="o-tien">
+          <input id="o-tien" type="text" inputmode="decimal" autocomplete="off"
+                 placeholder="0" aria-label="Số tiền nhận được">
+          <span class="dv">đ</span>
+        </div>
+        <div class="nho" id="doc-tien" style="margin:2px 0 10px;text-align:right">Không đồng</div>
+
+        <div class="chip-hang" style="margin-bottom:12px">
+          <button class="chip" type="button" data-cong="20000">+20k</button>
+          <button class="chip" type="button" data-cong="50000">+50k</button>
+          <button class="chip" type="button" data-cong="100000">+100k</button>
+          <button class="chip" type="button" data-cong="200000">+200k</button>
+          <button class="chip" type="button" data-cong="500000">+500k</button>
+          <button class="chip" type="button" id="nut-xoa-tien">Xoá</button>
+        </div>
+
+        <div style="margin-bottom:12px">
+          <div class="nhan" style="margin-bottom:5px">Hình thức nhận tiền</div>
+          <div class="chon-hinh" id="chon-hinh">
+            <button type="button" data-hinh="cash" class="chon"><span class="cham"></span> Tiền mặt</button>
+            <button type="button" data-hinh="transfer"><span class="cham"></span> Chuyển khoản</button>
+          </div>
+        </div>
+
+        <div class="hai-cot" style="margin-bottom:10px">
+          <label class="o" style="margin:0"><span>Ngày</span>
+            <input id="o-ngay" type="date"></label>
+          <label class="o" style="margin:0"><span>Giờ</span>
+            <input id="o-gio" type="time"></label>
+        </div>
+
+        <label class="o"><span>Ghi chú (tuyến, khách, số cuốc…)</span>
+          <input id="o-ghi-chu" type="text" enterkeyhint="done" autocomplete="off"
+                 placeholder="Ví dụ: sân bay → trung tâm"></label>
+
+        <label class="o"><span>Số hoá đơn (nếu có)</span>
+          <input id="o-hoa-don" type="text" enterkeyhint="done" autocomplete="off" placeholder="Để trống nếu không xuất"></label>
+
+        <button class="nut" id="nut-luu" type="button">Lưu khoản thu</button>
+        <div class="rat-nho giua" style="margin-top:8px" id="goi-y-luu"></div>
+      </div>
+
+      <div class="the det">
+        <h2>Vừa ghi hôm nay</h2>
+        <div id="ds-hom-nay"></div>
+      </div>
+    </section>
+
+    <!-- ===================== 2. SỔ DOANH THU ===================== -->
+    <section id="man-so" class="man">
+      <div class="the">
+        <h2>Xem theo tháng</h2>
+        <div class="hai-cot">
+          <label class="o" style="margin:0"><span>Tháng</span>
+            <input id="o-thang" type="month"></label>
+          <label class="o" style="margin:0"><span>Lọc nhanh</span>
+            <select id="o-loc-hinh">
+              <option value="all">Tất cả</option>
+              <option value="cash">Chỉ tiền mặt</option>
+              <option value="transfer">Chỉ chuyển khoản</option>
+            </select></label>
+        </div>
+        <div id="tong-thang" style="margin-top:12px"></div>
+      </div>
+
+      <div class="the det">
+        <h2>Sổ chi tiết theo ngày</h2>
+        <div id="ds-thang"></div>
+      </div>
+
+      <div class="the">
+        <h2>Xuất dữ liệu</h2>
+        <button class="nut phu" id="nut-csv-thang" type="button">Xuất CSV tháng này</button>
+        <div class="nho" style="margin-top:8px">CSV mở được bằng Excel/Google Sheets để in và lưu làm sổ.</div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. THUẾ ===================== -->
+    <section id="man-thue" class="man">
+      <div class="the">
+        <h2>Năm</h2>
+        <div class="hai-cot">
+          <label class="o" style="margin:0"><span>Chọn năm</span>
+            <select id="o-nam"></select></label>
+          <div style="display:flex;align-items:flex-end">
+            <button class="nut phu" id="nut-nam-nay" type="button" style="padding:11px">Về năm nay</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="khoi-canh-bao"></div>
+
+      <div class="the">
+        <h2>Doanh thu luỹ kế <span id="th-nhan-nam"></span></h2>
+        <div class="so-lon" id="th-doanh-thu">0 đ</div>
+        <div class="nho" id="th-cuoc"></div>
+        <div class="gach"></div>
+        <div class="hang nho"><span>Tiền mặt</span><b id="th-cash">0 đ</b></div>
+        <div class="hang nho"><span>Chuyển khoản</span><b id="th-transfer">0 đ</b></div>
+
+        <div class="gach"></div>
+        <div class="nho" id="th-moc-1-nhan"></div>
+        <div class="thanh" style="margin:5px 0 12px"><i id="th-moc-1-thanh" style="width:0%"></i></div>
+        <div class="nho" id="th-moc-2-nhan"></div>
+        <div class="thanh" style="margin:5px 0 2px"><i id="th-moc-2-thanh" style="width:0%"></i></div>
+      </div>
+
+      <div class="the">
+        <h2>Ước tính phải nộp cả năm</h2>
+        <div class="hang"><span class="nhan">Thuế GTGT (<span id="th-tyle-gtgt">3</span>%)</span><b class="so-vua" id="th-gtgt">0 đ</b></div>
+        <div class="hang"><span class="nhan">Thuế TNCN (<span id="th-tyle-tncn">1,5</span>%)</span><b class="so-vua" id="th-tncn">0 đ</b></div>
+        <div class="gach"></div>
+        <div class="hang"><span class="dam">Tổng cộng</span><b class="so-lon do" id="th-tong">0 đ</b></div>
+        <div class="nho" style="margin-top:8px" id="th-ghi-chu-thue"></div>
+      </div>
+
+      <div class="the det">
+        <h2>Theo quý và hạn nộp</h2>
+        <div style="padding:0 14px 12px">
+          <table class="bang">
+            <thead><tr><th>Quý</th><th>Doanh thu</th><th>Thuế</th><th>Hạn nộp</th></tr></thead>
+            <tbody id="th-bang-quy"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="the">
+        <h2>Doanh thu theo tháng</h2>
+        <div class="bieu-do" id="th-bieu-do"></div>
+        <div class="nho giua" id="th-bieu-do-nhan"></div>
+      </div>
+
+      <div class="the det">
+        <h2>Việc phải làm với cơ quan thuế</h2>
+        <div id="th-viec" style="padding:0 14px 12px"></div>
+      </div>
+    </section>
+
+    <!-- ===================== 4. CÀI ĐẶT ===================== -->
+    <section id="man-cd" class="man">
+      <div class="the">
+        <h2>Thông tin hộ kinh doanh</h2>
+        <label class="o"><span>Tên hộ kinh doanh</span>
+          <input id="cd-ten" type="text" autocomplete="off" placeholder="Hộ KD ..."></label>
+        <label class="o"><span>Mã số thuế</span>
+          <input id="cd-mst" type="text" inputmode="numeric" autocomplete="off" placeholder="10 hoặc 13 số"></label>
+        <label class="o" style="margin-bottom:0"><span>Địa chỉ / ghi chú</span>
+          <input id="cd-dia-chi" type="text" autocomplete="off" placeholder="Số nhà, đường, phường…"></label>
+      </div>
+
+      <div class="the">
+        <h2>Ngưỡng và tỷ lệ</h2>
+        <div class="canh-bao cam">
+          <div>Số liệu dưới đây là <b>ước tính</b> theo quy định đang áp dụng. Sếp nên đối chiếu với cục thuế nơi đăng ký trước khi dùng để nộp.</div>
+        </div>
+        <label class="o"><span>Ngưỡng doanh thu không phải nộp GTGT/TNCN (đ/năm)</span>
+          <input id="cd-nguong" type="text" inputmode="numeric" autocomplete="off"></label>
+        <label class="o"><span>Ngưỡng bắt buộc hoá đơn điện tử (đ/năm)</span>
+          <input id="cd-nguong-hddt" type="text" inputmode="numeric" autocomplete="off"></label>
+        <div class="nho" style="margin:-4px 0 10px">Mặc định theo quy định đang áp dụng: doanh thu năm từ <b>01 tỷ đồng trở xuống</b> thì không phải nộp GTGT và TNCN; doanh thu năm <b>trên 01 tỷ đồng</b> thì bắt buộc dùng hoá đơn điện tử.</div>
+        <div class="hai-cot">
+          <label class="o" style="margin:0"><span>Tỷ lệ GTGT (%)</span>
+            <input id="cd-tyle-gtgt" type="text" inputmode="decimal" autocomplete="off"></label>
+          <label class="o" style="margin:0"><span>Tỷ lệ TNCN (%)</span>
+            <input id="cd-tyle-tncn" type="text" inputmode="decimal" autocomplete="off"></label>
+        </div>
+        <div class="chip-hang" style="margin:12px 0">
+          <button class="chip" type="button" id="cd-mac-dinh-van-tai">Mặc định vận tải khách (3% / 1,5% · ngưỡng 1 tỷ)</button>
+        </div>
+        <button class="nut" id="nut-luu-cd" type="button">Lưu cài đặt</button>
+      </div>
+
+      <div class="the">
+        <h2>Sao lưu và phục hồi</h2>
+        <div id="cd-trang-thai-luu" class="nho" style="margin-bottom:10px"></div>
+        <button class="nut phu" id="nut-xuat-json" type="button" style="margin-bottom:8px">Sao lưu ra tệp (.json)</button>
+        <button class="nut phu" id="nut-nhap-json" type="button" style="margin-bottom:8px">Phục hồi từ tệp sao lưu</button>
+        <button class="nut vien" id="nut-xuat-csv" type="button">Xuất toàn bộ ra CSV</button>
+        <input id="o-tep" type="file" accept=".json,application/json" style="display:none">
+      </div>
+
+      <div class="the">
+        <h2>Căn cứ pháp lý</h2>
+        <div class="nho" id="cd-phap-ly"></div>
+        <button class="nut vien" id="nut-xem-phap-ly" type="button" style="margin-top:10px">Xem chi tiết căn cứ</button>
+      </div>
+
+      <div class="the">
+        <h2>Vùng nguy hiểm</h2>
+        <button class="nut do" id="nut-xoa-het" type="button">Xoá toàn bộ dữ liệu</button>
+        <div class="rat-nho" style="margin-top:8px">Hãy sao lưu ra tệp trước. Thao tác này không khôi phục được.</div>
+      </div>
+
+      <div class="the">
+        <h2>Về ứng dụng</h2>
+        <div class="nho">
+          Ứng dụng chạy hoàn toàn trên máy, không gửi dữ liệu đi đâu.<br>
+          Phiên bản 1.0.0 — <span id="cd-ngay-tao"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 5. CĂN CỨ (mở từ Cài đặt) ===================== -->
+    <section id="man-phaply" class="man">
+      <div class="the">
+        <h2>Căn cứ pháp lý</h2>
+        <div id="pl-noi-dung"></div>
+      </div>
+      <button class="nut phu" id="nut-dong-phap-ly" type="button">Quay lại</button>
+    </section>
+
+  </main>
+
+  <nav class="tab-duoi">
+    <div class="trong-tab">
+      <button type="button" data-man="ghi" class="dang-chon">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Ghi thu
+      </button>
+      <button type="button" data-man="so">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg>
+        Sổ
+      </button>
+      <button type="button" data-man="thue">
+        <svg viewBox="0 0 24 24"><path d="M5 3h14v18l-7-4-7 4z"/><path d="M9 8h6"/></svg>
+        Thuế
+      </button>
+      <button type="button" data-man="cd">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        Cài đặt
+      </button>
+    </div>
+  </nav>
+</div>
+
+<div id="bao"></div>
+<div id="che"><div class="tam" id="che-tam"></div></div>
+
+<script src="assets/tax.js"></script>
+<script src="assets/store.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
